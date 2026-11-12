@@ -1,0 +1,8 @@
+Context basically gets data that's shared across multiple pages. 
+This way, each page can access the data it needs directly from the context.
+
+It's usually implemented as a (Context,Provider) pair. 
+
+E.g.
+• User Logins: Sharing who is currently signed in with the navigation bar, profile page, and settings menu at the same time. (AuthContext,AuthProvider)
+• Shopping Carts: Sharing cart information across an order summary page and the navbar (CartContext,CartProvider)

@@ -1,0 +1,4 @@
+Utilities are different from hooks.
+
+There are just simple helper functions that you reuse across pages.
+For example, maybe a date converter, or a price rounding utility.

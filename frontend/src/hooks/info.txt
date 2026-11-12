@@ -1,0 +1,10 @@
+Hooks are basically logic that you want to use within a component or page, 
+without actually writing the logic in the page itself. 
+
+It improves modularity and reduces visual clutter. It's usually used for interactive features.
+
+E.g.
+• useState 
+• useEffect
+• useContext 
+• useRef

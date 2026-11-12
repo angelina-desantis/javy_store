@@ -1,0 +1,2 @@
+Organize tests by page.
+I dont really do testing, but you can use Vitest, Jest, Playwright, etc.

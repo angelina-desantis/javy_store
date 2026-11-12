@@ -1,0 +1,5 @@
+You can put any static data you need here. 
+
+This can be genre labels, platform labels, dummy info before backend implementation, etc.
+
+Basically anything that doesn't rely on the database yet or at all.

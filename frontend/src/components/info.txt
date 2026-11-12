@@ -1,0 +1,5 @@
+Only shared components across more than one page go here 
+
+E.g. navbars, buttons, input fields, etc.
+
+Delete this after reading

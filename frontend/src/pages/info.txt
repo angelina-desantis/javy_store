@@ -1,0 +1,6 @@
+Each page should be organized in its own folder.
+
+Pages are broken down into components. 
+They might reuse shared components from the components folder.
+
+They might ALSO have their own components folder for components that only that page relies on.
