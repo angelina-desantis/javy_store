@@ -28,7 +28,7 @@ cp .env.example .env
 
 Set the value for:
 
--   `VITE_API_URL` — the base URL of the backend API (FastAPI server).
+-   `VITE_BASE_API_URL` — the base URL of the backend API (SpringBoot server).
     
 
 ### 4. Install Dependencies
