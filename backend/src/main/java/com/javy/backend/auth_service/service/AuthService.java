@@ -1,5 +1,6 @@
 package com.javy.backend.auth_service.service;
 
+import com.javy.backend.auth_service.dto.AuthResponse;
 import com.javy.backend.auth_service.dto.UpdatePasswordRequest;
 import com.javy.backend.shared.exceptions.BadRequestException;
 import com.javy.backend.shared.exceptions.ConflictException;
@@ -7,15 +8,12 @@ import com.javy.backend.shared.exceptions.NotFoundException;
 import com.javy.backend.shared.exceptions.UnauthorizedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.javy.backend.auth_service.dto.LoginRequest;
 import com.javy.backend.auth_service.dto.SignUpRequest;
-import com.javy.backend.user_service.dto.UserResponse;
 import com.javy.backend.user_service.model.User;
 import com.javy.backend.user_service.model.enums.Role;
 import com.javy.backend.user_service.repository.UserRepository;
@@ -53,7 +51,7 @@ public class AuthService {
      * @return the newly registered user's profile and JWT
      */
     @Transactional
-    public UserResponse signUp(SignUpRequest request) {
+    public AuthResponse signUp(SignUpRequest request) {
         String email = request.email().trim().toLowerCase();
 
         if (userRepository.findByEmail(email).isPresent()) {
@@ -71,7 +69,7 @@ public class AuthService {
 
         String token = jwtGenerator.generateToken(user.getEmail());
 
-        return UserResponse.from(token, user);
+        return AuthResponse.from(token, user);
     }
 
     /**
@@ -80,7 +78,7 @@ public class AuthService {
      * @param request the user's login credentials
      * @return the authenticated user's profile and JWT
      */
-    public UserResponse login(LoginRequest request) {
+    public AuthResponse login(LoginRequest request) {
         String email = request.email().trim().toLowerCase();
 
         authenticationManager.authenticate(
@@ -95,7 +93,7 @@ public class AuthService {
 
         String token = jwtGenerator.generateToken(user.getEmail());
 
-        return UserResponse.from(token, user);
+        return AuthResponse.from(token, user);
     }
 
     /**
