@@ -1,14 +1,27 @@
 package com.javy.backend.shared.config;
 
+import com.javy.backend.auth_service.service.JWTAuthEntryPoint;
+import com.javy.backend.auth_service.service.JWTAuthenticationFilter;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -16,84 +29,126 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.List;
 
 /**
- * Configures application security.
- *
- * <p>
- * This configuration enables JWT-based authentication using Supabase as
- * the OAuth2 resource server, configures Cross-Origin Resource Sharing
- * (CORS), disables CSRF protection for the REST API, and defines which
- * endpoints require authentication.
- * </p>
+ * Configures application security, including JWT authentication,
+ * endpoint authorization, password encoding, and CORS.
  */
-@EnableWebSecurity
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
+    private final JWTAuthEntryPoint authEntryPoint;
+    private final JWTAuthenticationFilter jwtAuthenticationFilter;
+
+    public SecurityConfig(JWTAuthEntryPoint authEntryPoint, JWTAuthenticationFilter jwtAuthenticationFilter) {
+        this.authEntryPoint = authEntryPoint;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
+
     /**
-     * Configures the application's HTTP security.
+     * Configures the application's security filter chain.
      *
-     * <p>
-     * Public endpoints such as Swagger documentation are accessible
-     * without authentication, while all remaining endpoints require
-     * a valid JWT.
-     * </p>
-     *
-     * @param http Spring Security HTTP configuration
-     * @return configured security filter chain
-     * @throws Exception if security configuration fails
+     * @param http the HTTP security configuration
+     * @return the configured security filter chain
+     * @throws Exception if the security configuration fails
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors ->
+                        cors.configurationSource(corsConfigurationSource())
+                )
+                .exceptionHandling(ex ->
+                        ex.authenticationEntryPoint(authEntryPoint)
+                )
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(
+                                SessionCreationPolicy.STATELESS
+                        )
+                )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(
                                 "/public/**",
-                                "/auth/signup",
-                                "/auth/login",
-                                "/auth/refresh",
-                                "/auth/reset-password",
-                                "/auth/resend-verification",
+                                "/api/auth/signup",
+                                "/api/auth/login",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
                         ).permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(Customizer.withDefaults())
+                .addFilterBefore(
+                        jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class
                 );
 
         return http.build();
     }
 
     /**
-     * Configures Cross-Origin Resource Sharing (CORS) for the application.
+     * Configures Cross-Origin Resource Sharing for approved frontend applications.
      *
-     * <p>
-     * Requests originating from approved frontend applications are
-     * permitted to access the API using the configured HTTP methods
-     * and request headers.
-     * </p>
-     *
-     * @return CORS configuration source used by Spring Security
+     * @return the CORS configuration source
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOrigins(List.of(
-                "http://localhost:3000"
+                "http://localhost:5173"
         ));
 
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        config.setAllowedMethods(List.of(
+                "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"
+        ));
+
         config.setAllowedHeaders(List.of("*"));
         config.setExposedHeaders(List.of("*"));
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
         source.registerCorsConfiguration("/**", config);
 
         return source;
+    }
+
+    /**
+     * Provides the password encoder used to hash and verify user passwords.
+     *
+     * @return a BCrypt password encoder
+     */
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * Provides the authentication manager used by the authentication service.
+     *
+     * @param configuration the authentication configuration
+     * @return the application's authentication manager
+     * @throws Exception if the authentication manager cannot be created
+     */
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
+    /**
+     * Prevents Spring Boot from registering the JWT filter as a regular
+     * servlet filter, since it is already registered in the security chain.
+     *
+     * @return the disabled servlet filter registration
+     */
+    @Bean
+    public FilterRegistrationBean<JWTAuthenticationFilter>
+    jwtFilterRegistration(JWTAuthenticationFilter filter) {
+        FilterRegistrationBean<JWTAuthenticationFilter> registration = new FilterRegistrationBean<>(filter);
+
+        registration.setEnabled(false);
+
+        return registration;
     }
 }

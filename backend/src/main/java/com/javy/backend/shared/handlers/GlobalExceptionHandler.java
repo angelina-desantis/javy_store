@@ -10,6 +10,7 @@ import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -49,6 +50,27 @@ public class GlobalExceptionHandler {
      */
     private String cid() {
         return MDC.get("correlationId");
+    }
+
+    /**
+     * Handles authentication failures raised by Spring Security.
+     *
+     * @param ex the authentication exception
+     * @return a standardized response indicating authentication failure
+     */
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ApiResult<Void>> handleAuthentication(AuthenticationException ex) {
+
+        log.info("Authentication [{}]: {}", cid(), ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                new ApiResult<>(
+                        false,
+                        "Invalid email or password.",
+                        null,
+                        Instant.now()
+                )
+        );
     }
 
     /**

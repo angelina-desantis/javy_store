@@ -1,4 +1,4 @@
-package com.javy.backend.auth_service.dto.request;
+package com.javy.backend.auth_service.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;

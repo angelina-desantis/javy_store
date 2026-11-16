@@ -1,6 +1,5 @@
-package com.javy.backend.auth_service.dto.request;
+package com.javy.backend.auth_service.dto;
 
-import com.javy.backend.user_service.model.enums.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 
@@ -36,19 +35,18 @@ public record SignUpRequest(
         String password,
 
         @Schema(
-                description = "The user's full display name.",
-                example = "Jane Doe",
+                description = "The user's first name.",
+                example = "Jane",
                 requiredMode = Schema.RequiredMode.REQUIRED
         )
-        @NotBlank(message = "Name is required.")
-        String name,
+        @NotBlank(message = "First name is required.")
+        String firstName,
 
         @Schema(
-                description = "The user's selected account type.",
-                example = "CUSTOMER",
-                allowableValues = {"CUSTOMER", "ADMIN", "PROVIDER"},
+                description = "The user's last name.",
+                example = "Doe",
                 requiredMode = Schema.RequiredMode.REQUIRED
         )
-        @NotNull(message = "Role is required.")
-        Role role
+        @NotBlank(message = "Last name is required.")
+        String lastName
 ) {}
