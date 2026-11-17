@@ -1,4 +1,4 @@
-package com.javy.backend.user_service.dto;
+package com.javy.backend.user_service.dto.response;
 
 import java.util.UUID;
 
@@ -26,28 +26,22 @@ public record UserResponse(
         String lastName,
 
         @Schema(description = "The user's application role.")
-        Role role,
-
-        @Schema(description = "The user's JWT authentication token.")
-        String token
-
+        Role role
 ) {
 
     /**
      * Creates a user response from a user entity and JWT.
      *
-     * @param token the user's JWT authentication token
      * @param user the user entity
      * @return the user response
      */
-    public static UserResponse from(String token, User user) {
+    public static UserResponse from(User user) {
         return new UserResponse(
                 user.getId(),
                 user.getEmail(),
                 user.getFirstName(),
                 user.getLastName(),
-                user.getRole(),
-                token
+                user.getRole()
         );
     }
 }

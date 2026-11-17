@@ -1,5 +1,6 @@
 package com.javy.backend.auth_service.controller;
 
+import com.javy.backend.auth_service.dto.AuthResponse;
 import com.javy.backend.auth_service.dto.UpdatePasswordRequest;
 import com.javy.backend.shared.exceptions.UnauthorizedException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,7 +14,6 @@ import com.javy.backend.auth_service.dto.LoginRequest;
 import com.javy.backend.auth_service.dto.SignUpRequest;
 import com.javy.backend.auth_service.service.AuthService;
 import com.javy.backend.shared.dto.ApiResult;
-import com.javy.backend.user_service.dto.UserResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -53,10 +53,10 @@ public class AuthController {
             @ApiResponse(responseCode = "409", description = "An account with this email already exists.")
     })
     @PostMapping("/signup")
-    public ResponseEntity<ApiResult<UserResponse>> signUp(
+    public ResponseEntity<ApiResult<AuthResponse>> signUp(
             @Valid @RequestBody SignUpRequest request
     ) {
-        UserResponse response = authService.signUp(request);
+        AuthResponse response = authService.signUp(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 ApiResult.success("Account successfully created.", response)
@@ -79,10 +79,10 @@ public class AuthController {
             @ApiResponse(responseCode = "401", description = "Invalid email or password.")
     })
     @PostMapping("/login")
-    public ResponseEntity<ApiResult<UserResponse>> login(
+    public ResponseEntity<ApiResult<AuthResponse>> login(
             @Valid @RequestBody LoginRequest request
     ) {
-        UserResponse response = authService.login(request);
+        AuthResponse response = authService.login(request);
 
         return ResponseEntity.ok(
                 ApiResult.success("Successfully authenticated.", response)
@@ -93,7 +93,6 @@ public class AuthController {
      * Logs out the currently authenticated user by revoking their JWT.
      *
      * @param request the HTTP request containing the Authorization header
-     * @param userDetails the currently authenticated user's details
      * @return a standardized response indicating successful logout
      */
     @Operation(
