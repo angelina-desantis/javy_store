@@ -51,6 +51,7 @@ public class GameService {
     }
 
     //helper methods
+    //guard for the query above filterGame in GameRepository
     private String blankToNull (String str) {
         if (str == null || str.isBlank()) {
             return null;

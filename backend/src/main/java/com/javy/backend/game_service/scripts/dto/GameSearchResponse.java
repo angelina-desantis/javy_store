@@ -3,7 +3,10 @@ package com.javy.backend.game_service.scripts.dto;
 import java.util.List;
 import java.util.UUID;
 
-//The data fields I want returned when user searches for games
+/*
+Columns of the game that is going to be returned to
+the front end by the search and filter endpoints
+ */
 public record GameSearchResponse(
         UUID id,
         String name,
