@@ -24,6 +24,7 @@ public class GameService {
 
     public PaginatedResponse<GameSearchResponse> searchGame(String game, Pageable pageable) {
         String slug = slugify(game);
+
         //return empty page if nothing is searched
         if (slug == null || slug.isBlank()) {
             return PaginatedResponse.from(Page.<GameSearchResponse>empty(pageable));
@@ -36,12 +37,17 @@ public class GameService {
         return PaginatedResponse.from(formattedPage);
     }
 
-    public PaginatedResponse<GameSearchResponse> filter(String genre, String platform, String theme, Pageable pageable) {
+    public PaginatedResponse<GameSearchResponse> filter(String theme, String platform, String genre, Pageable pageable) {
         //null strings are used by filterGames query in GameRepository
+        String slugTheme = slugify(theme);
+        String slugPlatform = slugify(platform);
+        String slugGenre = slugify(genre);
+
         Page<Game> result = repository.filterGames(
-                blankToNull(genre),
+                blankToNull(theme),
                 blankToNull(platform),
-                blankToNull(theme), pageable);
+                blankToNull(genre),
+                pageable);
         
         Page<GameSearchResponse> formattedPage = result.map(mapper::toSearchDTO);
         return PaginatedResponse.from(formattedPage);
