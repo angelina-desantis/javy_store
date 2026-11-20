@@ -24,7 +24,7 @@ public class GameService {
             return List.of();
         }
         //search by title/name
-        return new ArrayList<>(repository.findByName(game));
+        return new ArrayList<>(repository.findByName(slugify(game)));
     }
 
     public PaginatedResponse<Game> filter(String genre, String platform, String theme, Pageable pageable) {
@@ -47,12 +47,11 @@ public class GameService {
         return str;
     }
 
-    private String normalizeStr (String str) {
+    private String slugify(String str) {
         if (str == null || str.isBlank()) {
             return null;
         }
-        //change to lowercase and remove all white spaces.
-        return str.toLowerCase().replaceAll("\\s+", "");
+        return str.toLowerCase().replaceAll("[^a-z0-9\\s-]", "").trim().replaceAll("[\\s-]+", "-");
     }
 
 
