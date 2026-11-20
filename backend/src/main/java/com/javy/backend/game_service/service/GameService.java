@@ -30,7 +30,9 @@ public class GameService {
         }
         //search by title/name
         Page<Game> result = repository.findBySlug(slug, pageable);
+        //format the page into game DTO
         Page<GameSearchResponse> formattedPage = result.map(mapper::toSearchDTO);
+        //convert Page into PaginatedResponse
         return PaginatedResponse.from(formattedPage);
     }
 

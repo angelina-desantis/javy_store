@@ -19,8 +19,9 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
 
     List<Game> findAllByIgdbIdIn(Collection<Integer> igdbIds);
 
+    //CONCAT allows for partial matches
     @Query("""
-        SELECT new com.javy.backend.dto.GameSearchResponse(g.id, g.name, g.slug, g.imageUrl)
+        SELECT g
         FROM Game g
         WHERE g.slug LIKE CONCAT('%', :slug, '%')
         ORDER BY g.name
