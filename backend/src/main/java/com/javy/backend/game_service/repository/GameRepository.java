@@ -1,6 +1,7 @@
 package com.javy.backend.game_service.repository;
 
 import com.javy.backend.game_service.model.Game;
+import com.javy.backend.game_service.scripts.dto.GameSearchResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,7 +19,13 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
 
     List<Game> findAllByIgdbIdIn(Collection<Integer> igdbIds);
 
-    List<Game> findBySlug(String title);
+    @Query("""
+        SELECT new com.javy.backend.dto.GameSearchResponse(g.id, g.name, g.slug, g.imageUrl)
+        FROM Game g
+        WHERE g.slug LIKE CONCAT('%', :slug, '%')
+        ORDER BY g.name
+    """)
+    Page<Game> findBySlug(String slug, Pageable pageable);
 
     //return rows of games where they match every filter that is not null
     //if criteria is null, then it ignores that criteria

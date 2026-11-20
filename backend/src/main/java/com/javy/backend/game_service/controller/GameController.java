@@ -1,6 +1,7 @@
 package com.javy.backend.game_service.controller;
 
 import com.javy.backend.game_service.model.Game;
+import com.javy.backend.game_service.scripts.dto.GameSearchResponse;
 import com.javy.backend.game_service.service.GameService;
 import com.javy.backend.shared.dto.PaginatedResponse;
 import org.springframework.data.domain.Pageable;
@@ -22,8 +23,8 @@ public class GameController {
 
     //@RequestParam(required = false) --> make searching a game optional (then it will do nothing)
     @GetMapping("/search")
-    public List<Game> search(@RequestParam(required = false) String game) {
-        return service.searchGame(game);
+    public PaginatedResponse<GameSearchResponse> search(@RequestParam(required = false) String game, Pageable pageable) {
+        return service.searchGame(game, pageable);
     }
 
     //user selects a filtering option and frontend sends a string?

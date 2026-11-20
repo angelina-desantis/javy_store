@@ -5,6 +5,7 @@ import com.javy.backend.game_service.model.Game;
 import com.javy.backend.game_service.model.Genre;
 import com.javy.backend.game_service.model.Platform;
 import com.javy.backend.game_service.model.Theme;
+import com.javy.backend.game_service.scripts.dto.GameSearchResponse;
 import com.javy.backend.game_service.scripts.dto.IGDBGameResponse;
 import org.springframework.stereotype.Component;
 
@@ -82,4 +83,18 @@ public class GameMapper {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
     }
+
+    //Converts Game Entity into a GameSearchResponse DTO
+    public GameSearchResponse toSearchDTO(Game game) {
+        return new GameSearchResponse(
+                game.getId(),
+                game.getName(),
+                game.getSlug(),
+                game.getImageUrl(),
+                game.getPlatforms().stream().map(Platform::getName).toList(),
+                game.getGenres().stream().map(Genre::getName).toList(),
+                game.getThemes().stream().map(Theme::getName).toList());
+    }
+
+
 }

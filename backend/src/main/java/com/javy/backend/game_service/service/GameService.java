@@ -2,6 +2,8 @@ package com.javy.backend.game_service.service;
 
 import com.javy.backend.game_service.model.Game;
 import com.javy.backend.game_service.repository.GameRepository;
+import com.javy.backend.game_service.scripts.dto.GameSearchResponse;
+import com.javy.backend.game_service.scripts.mapper.GameMapper;
 import com.javy.backend.shared.dto.PaginatedResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,18 +15,23 @@ import java.util.List;
 @Service
 public class GameService {
     private final GameRepository repository;
+    private final GameMapper mapper;
 
-    public GameService(GameRepository repository) {
+    public GameService(GameRepository repository, GameMapper mapper) {
         this.repository = repository;
+        this.mapper = mapper;
     }
 
-    public List<Game> searchGame(String game) {
-        //return empty list if nothing is searched
-        if (game == null || game.isBlank()) {
-            return List.of();
+    public PaginatedResponse<GameSearchResponse> searchGame(String game, Pageable pageable) {
+        String slug = slugify(game);
+        //return empty page if nothing is searched
+        if (slug == null || slug.isBlank()) {
+            return PaginatedResponse.from(Page.<GameSearchResponse>empty(pageable));
         }
         //search by title/name
-        return new ArrayList<>(repository.findBySlug(slugify(game)));
+        Page<Game> result = repository.findBySlug(slug, pageable);
+        Page<GameSearchResponse> formattedPage = result.map(mapper::toSearchDTO);
+        return PaginatedResponse.from(formattedPage);
     }
 
     public PaginatedResponse<Game> filter(String genre, String platform, String theme, Pageable pageable) {
