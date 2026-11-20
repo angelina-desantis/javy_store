@@ -25,15 +25,15 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
     @Query(value = """
             SELECT g.igdbId, t.name, p.name, gen.name
             FROM Game g
-            JOIN genre_game gg ON g.game_id = gen.game_id
-            JOIN game gen ON gen.genre_id = gg.genre_id
-            JOIN platform_game pg ON g.game_id = p.game_id
+            JOIN genre_game gg ON gg.game_id = g.game_id
+            JOIN genre gen ON gen.genre_id = gg.genre_id
+            JOIN platform_game pg ON g.game_id = pg.game_id
             JOIN platform p ON p.platform_id = pg.platform_id
-            JOIN theme_game tg ON g.game_id = t.game_id
+            JOIN theme_game tg ON g.game_id = tg.game_id
             JOIN theme t ON t.theme_id = tg.theme_id
             WHERE (:genre IS NULL OR gen.genre = :genre)
-              AND (:platform IS NULL OR plat.platform = :platform)
-              AND (:theme IS NULL OR thme.theme = :theme)
+              AND (:platform IS NULL OR p.platform = :platform)
+              AND (:theme IS NULL OR t.theme = :theme)
             """, nativeQuery = true)  //nativeQuery = true (run has raw SQL, default or false is JPQL)
     Page<Game> filterGames(
             @Param("genre") String genre,

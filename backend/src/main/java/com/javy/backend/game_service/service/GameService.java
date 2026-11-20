@@ -43,9 +43,17 @@ public class GameService {
     private String blankToNull (String str) {
         if (str == null || str.isBlank()) {
             return null;
-        } else {
-            return str;
         }
+        return str;
     }
+
+    private String normalizeStr (String str) {
+        if (str == null || str.isBlank()) {
+            return null;
+        }
+        //change to lowercase and remove all white spaces.
+        return str.toLowerCase().replaceAll("\\s+", "");
+    }
+
 
 }
