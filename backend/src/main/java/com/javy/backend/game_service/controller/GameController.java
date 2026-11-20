@@ -30,10 +30,11 @@ public class GameController {
     //user selects a filtering option and frontend sends a string?
     //assumption: one value for each parameter
     @GetMapping("/filter")
-    public PaginatedResponse<Game> filter(@RequestParam(required = false) String theme,
-                                          @RequestParam(required = false) String platform,
-                                          @RequestParam(required = false) String genre,
-                                          Pageable pageable) {
+    public PaginatedResponse<GameSearchResponse> filter (
+                                            @RequestParam(required = false) String theme,
+                                            @RequestParam(required = false) String platform,
+                                            @RequestParam(required = false) String genre,
+                                            Pageable pageable) {
         return service.filter(theme, platform, genre, pageable);
     }
 

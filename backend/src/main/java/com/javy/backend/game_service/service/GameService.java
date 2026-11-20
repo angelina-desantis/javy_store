@@ -36,19 +36,18 @@ public class GameService {
         return PaginatedResponse.from(formattedPage);
     }
 
-    public PaginatedResponse<Game> filter(String genre, String platform, String theme, Pageable pageable) {
+    public PaginatedResponse<GameSearchResponse> filter(String genre, String platform, String theme, Pageable pageable) {
         //null strings are used by filterGames query in GameRepository
-        //repository returns a page file
         Page<Game> result = repository.filterGames(
                 blankToNull(genre),
                 blankToNull(platform),
                 blankToNull(theme), pageable);
-
-        //copies the values from result page into a PaginatedResponse object
-        return PaginatedResponse.from(result);
+        
+        Page<GameSearchResponse> formattedPage = result.map(mapper::toSearchDTO);
+        return PaginatedResponse.from(formattedPage);
     }
 
-    //helper method
+    //helper methods
     private String blankToNull (String str) {
         if (str == null || str.isBlank()) {
             return null;
