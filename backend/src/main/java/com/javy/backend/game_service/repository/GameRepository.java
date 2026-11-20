@@ -18,7 +18,7 @@ public interface GameRepository extends JpaRepository<Game, UUID> {
 
     List<Game> findAllByIgdbIdIn(Collection<Integer> igdbIds);
 
-    List<Game> findByName(String title);
+    List<Game> findBySlug(String title);
 
     //return rows of games where they match every filter that is not null
     //if criteria is null, then it ignores that criteria

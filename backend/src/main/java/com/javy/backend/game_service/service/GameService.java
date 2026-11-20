@@ -24,7 +24,7 @@ public class GameService {
             return List.of();
         }
         //search by title/name
-        return new ArrayList<>(repository.findByName(slugify(game)));
+        return new ArrayList<>(repository.findBySlug(slugify(game)));
     }
 
     public PaginatedResponse<Game> filter(String genre, String platform, String theme, Pageable pageable) {
@@ -47,6 +47,7 @@ public class GameService {
         return str;
     }
 
+    //slugify user searches so it can be used for database search
     private String slugify(String str) {
         if (str == null || str.isBlank()) {
             return null;
