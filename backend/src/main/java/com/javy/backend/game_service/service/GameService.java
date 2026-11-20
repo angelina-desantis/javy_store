@@ -39,9 +39,6 @@ public class GameService {
 
     public PaginatedResponse<GameSearchResponse> filter(String theme, String platform, String genre, Pageable pageable) {
         //null strings are used by filterGames query in GameRepository
-        String slugTheme = slugify(theme);
-        String slugPlatform = slugify(platform);
-        String slugGenre = slugify(genre);
 
         Page<Game> result = repository.filterGames(
                 blankToNull(theme),
