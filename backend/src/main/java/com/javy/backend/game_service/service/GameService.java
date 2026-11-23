@@ -5,10 +5,11 @@ import com.javy.backend.game_service.repository.GameRepository;
 import com.javy.backend.game_service.scripts.dto.GameSearchResponse;
 import com.javy.backend.game_service.scripts.mapper.GameMapper;
 import com.javy.backend.shared.dto.PaginatedResponse;
+import com.javy.backend.shared.service.ServiceUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
+import static com.javy.backend.shared.service.ServiceUtils.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class GameService {
     }
 
     public PaginatedResponse<GameSearchResponse> searchGame(String game, Pageable pageable) {
-        String slug = slugify(game);
+        String slug = ServiceUtils.slugify(game);
 
         //return empty page if nothing is searched
         if (slug == null || slug.isBlank()) {
@@ -41,15 +42,15 @@ public class GameService {
         //null strings are used by filterGames query in GameRepository
 
         Page<Game> result = repository.filterGames(
-                blankToNull(theme),
-                blankToNull(platform),
-                blankToNull(genre),
+                ServiceUtils.blankToNull(theme),
+                ServiceUtils.blankToNull(platform),
+                ServiceUtils.blankToNull(genre),
                 pageable);
         
         Page<GameSearchResponse> formattedPage = result.map(mapper::toSearchDTO);
         return PaginatedResponse.from(formattedPage);
     }
-
+/*
     //helper methods
     //guard for the query above filterGame in GameRepository
     private String blankToNull (String str) {
@@ -66,6 +67,6 @@ public class GameService {
         }
         return str.toLowerCase().replaceAll("[^a-z0-9\\s-]", "").trim().replaceAll("[\\s-]+", "-");
     }
-
+*/
 
 }
