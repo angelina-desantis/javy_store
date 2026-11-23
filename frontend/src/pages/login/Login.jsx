@@ -6,7 +6,7 @@ import "./index.css";
 import "./UserLayout.css";
 import "Login.css";
 
-import AuthCustTopbar from "../components/CustTopbar";
+import CustTopbar from "../components/CustTopbar";
 
 function Login(user_list) {
 
