@@ -50,23 +50,5 @@ public class GameService {
         Page<GameSearchResponse> formattedPage = result.map(mapper::toSearchDTO);
         return PaginatedResponse.from(formattedPage);
     }
-/*
-    //helper methods
-    //guard for the query above filterGame in GameRepository
-    private String blankToNull (String str) {
-        if (str == null || str.isBlank()) {
-            return null;
-        }
-        return str;
-    }
-
-    //slugify user searches so it can be used for database search
-    private String slugify(String str) {
-        if (str == null || str.isBlank()) {
-            return null;
-        }
-        return str.toLowerCase().replaceAll("[^a-z0-9\\s-]", "").trim().replaceAll("[\\s-]+", "-");
-    }
-*/
 
 }
