@@ -108,7 +108,15 @@
   color: #FDA4AF;
 }
 
-.games-table td.edit-game {
-  color: var(--accent);
-  cursor: pointer;
+.games-table .edit-game{
+  background:none;
+  border:none;
+  color:var(--accent);
+  font-size:16px;
+  cursor:pointer;
+  padding:0;
+}
+
+.games-table .edit-game:hover{
+  text-decoration:underline;
 }

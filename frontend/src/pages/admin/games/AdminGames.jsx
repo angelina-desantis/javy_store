@@ -2,14 +2,22 @@
 import {useState} from "react";
 import "./AdminGames.css";
 
-function AdminGames({games,onAddGame}){
+function AdminGames({games,onAddGame,onEditGame}){
   const [search,setSearch]=useState("");
   const [platform,setPlatform]=useState("All");
 
-  const filteredGames=games.filter((game)=>{
-    return game.name.toLowerCase().includes(search.toLowerCase()) &&
-      (platform==="All" || game.platform.includes(platform));
-  });
+  const filteredGames=[];
+
+  for(let i=0;i<games.length;i++){
+    const game=games[i];
+    if(!game.name.toLowerCase().includes(search.toLowerCase())){
+      continue;
+    }
+    if(platform!=="All" && !game.platform.includes(platform)){
+      continue;
+    }
+    filteredGames.push(game);
+}
 
   const inStock=games.filter((game)=>game.stock>0).length;
 
@@ -80,7 +88,9 @@ function AdminGames({games,onAddGame}){
                 <td className={game.stock===0 ? "out-stock" : "in-stock"}>
                   {game.stock}
                 </td>
-                <td className="edit-game">Edit</td>
+                <td><button type="button" className="edit-game" onClick={()=>onEditGame(game)}>Edit
+  </button>
+</td>
               </tr>
             ))}
           </tbody>

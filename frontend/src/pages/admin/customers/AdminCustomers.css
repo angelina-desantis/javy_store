@@ -1,0 +1,75 @@
+.admin-customers{
+  flex:1;
+  min-width:0;
+  padding:60px 50px;
+  text-align:left;
+}
+
+.customers-header h1{
+  font-size:36px;
+  margin:0;
+  color:var(--text-h);
+}
+
+.customers-header p{
+  margin-top:10px;
+}
+
+.customers-table-box{
+  margin-top:50px;
+  padding:25px;
+  background:var(--bg-card);
+  border-radius:12px;
+}
+
+.customers-table-box h2{
+  font-size:26px;
+  margin-bottom:25px;
+  color:var(--text-h);
+}
+
+.customers-table-box input{
+  background:var(--bg-input);
+  color:var(--text-h);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:12px;
+  width:280px;
+  font-size:16px;
+  margin-bottom:20px;
+}
+
+.customers-table{
+  width:100%;
+  border-collapse:collapse;
+  text-align:left;
+}
+
+.customers-table th,
+.customers-table td{
+  padding:20px 10px;
+  border-bottom:1px solid var(--border);
+}
+
+.customers-table th{
+  color:var(--text);
+  font-weight:500;
+}
+
+.customers-table td{
+  color:var(--text-h);
+}
+
+.customers-table .view-customer{
+  background:none;
+  border:none;
+  color:var(--accent);
+  font-size:16px;
+  cursor:pointer;
+  padding:0;
+}
+
+.customers-table .view-customer:hover{
+  text-decoration:underline;
+}
+

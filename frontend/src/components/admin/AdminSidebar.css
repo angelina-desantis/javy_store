@@ -19,19 +19,25 @@
   gap: 16px;
 }
 
-.admin-nav a {
-  color: var(--text);
-  text-decoration: none;
-  font-size: 20px;
-  padding: 14px 15px;
-  border-radius: 8px;
+.admin-nav button{
+  display:block;
+  width:100%;
+  text-align:left;
+  color:var(--text);
+  background:none;
+  border:none;
+  font-size:20px;
+  font-family:inherit;
+  padding:14px 15px;
+  border-radius:8px;
+  cursor:pointer;
 }
 
-.admin-nav a:hover {
-  background: var(--button-secondary);
+.admin-nav button:hover{
+  background:var(--button-secondary);
 }
 
-.admin-nav a.active {
-  background: var(--accent);
-  color: var(--bg);
+.admin-nav button.active{
+  background:var(--accent);
+  color:var(--bg);
 }
