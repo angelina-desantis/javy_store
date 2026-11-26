@@ -6,7 +6,7 @@ import "./index.css";
 import "./UserLayout.css";
 import "Login.css";
 
-import CustTopbar from "../components/CustTopbar";
+import CustTopbar from "../components/topbar/CustTopbar";
 
 function Login(user_list) {
 
@@ -22,7 +22,7 @@ function Login(user_list) {
             return;
         }
 
-        /* Query database and determine if the login is valid */
+        /* TODO: connect to AuthProvider and AuthContext */
         for () {
             if () {
                 setAuth(true);

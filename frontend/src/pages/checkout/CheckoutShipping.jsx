@@ -6,7 +6,7 @@ import "./index.css";
 import "./UserLayout.css";
 import "Checkout.css";
 
-import AuthCustTopbar from "../components/AuthCustTopbar";
+import AuthCustTopbar from "../components/topbar/AuthCustTopbar";
 
 function CheckoutShipping() {
 
