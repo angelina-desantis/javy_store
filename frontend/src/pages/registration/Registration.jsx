@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import "./index.css";
 import "./UserLayout.css";
-import "Checkout.css";
+import "Registration.css";
 
 import CustTopbar from "../components/topbar/CustTopbar";
 
