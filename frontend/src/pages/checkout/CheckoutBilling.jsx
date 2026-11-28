@@ -26,6 +26,10 @@ function CheckoutBilling() {
             alert("The card number is in the incorrect format.");
             return;
         }
+        if (!Number.isInteger((Number(cardExpiryM)))) {
+            alert("The month entered is invalid.")
+            return;
+        }
         if (!Number.isInteger((Number(cardExpiryY)))) {
             alert("The year is in the incorrect format.");
             return;
@@ -37,7 +41,7 @@ function CheckoutBilling() {
 
         validateBillingCard({
             cardNum: Number(cardNum),
-            cardExpiryM,
+            cardExpiryM: Number(cardExpiryM),
             cardExpiryY: Number(cardExpiryY),
             cardName: cardName.trim(),
             cardCode: Number(cardCode)
@@ -53,10 +57,10 @@ function CheckoutBilling() {
                     <label>Card Number</label>
                     <input type="text" value={cardNum}/>
                     
-                    <label>Expiry Month</label>
-                    <input type="password" value={cardExpiryM}/>
+                    <label>Expiry Month (MM)</label>
+                    <input type="text" value={cardExpiryM}/>
 
-                    <label>Expiry Year</label>
+                    <label>Expiry Year (YYYY)</label>
                     <input type="text" value={cardExpiryY}/>
 
                     <label>Name on Card</label>
