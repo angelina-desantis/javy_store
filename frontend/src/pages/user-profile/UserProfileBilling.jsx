@@ -1,0 +1,77 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { useState } from "react";
+
+import "./index.css";
+import "./UserLayout.css";
+import "UserProfile.css";
+
+import CustTopbar from "../components/topbar/CustTopbar";
+
+function UserProfileBilling() {
+
+    const [cardNum, setCardNum] = useState("");
+    const [cardExpiryM, setCardExpiryM] = useState("");
+    const [cardExpiryY, setCardExpiryY] = useState("");
+    const [cardName, setCardName] = useState("");
+    const [cardCode, setCardCode] = useState("");
+
+    function processForm() {
+        if (cardNum === "" || !cardExpiryM || cardExpiryY === "" 
+            || cardName === "" || cardCode === "") {
+            alert("One or more fields are missing. Please try again.");
+            return;
+            }
+        if (!cardNum.matches("[0-9]*")) {
+            alert("The card number is in the incorrect format.");
+            return;
+        }
+        if (!Number.isInteger((Number(cardExpiryM)))) {
+            alert("The month entered is invalid.")
+            return;
+        }
+        if (!Number.isInteger((Number(cardExpiryY)))) {
+            alert("The year is in the incorrect format.");
+            return;
+        }
+        if (!cardCode.matches("[0-9]*")) {
+            alert("The security code is in the incorrect format.");
+            return;
+        }
+
+        validateBillingCard({
+            cardNum: Number(cardNum),
+            cardExpiryM: Number(cardExpiryM),
+            cardExpiryY: Number(cardExpiryY),
+            cardName: cardName.trim(),
+            cardCode: Number(cardCode)
+        });
+    }
+
+     /* If billing card is validated, send an update request */
+    return (
+        <main className="profile">
+            <CustTopbar />
+            <div className="form">
+                <label>Card Number</label>
+                <input type="text" value={cardNum}/>
+                    
+                <label>Expiry Month (MM)</label>
+                <input type="text" value={cardExpiryM}/>
+
+                <label>Expiry Year (YYYY)</label>
+                <input type="text" value={cardExpiryY}/>
+
+                <label>Name on Card</label>
+                <input type="text" value={cardName}/>
+                    
+                <label>Security Code</label>
+                <input type="text" value={cardCode}/>
+
+                <button type="button" onClick={processForm}>Update</button>
+            </div>
+        </main>
+    )
+}
+
+export default UserProfileBilling;
