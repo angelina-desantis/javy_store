@@ -26,6 +26,10 @@ function RegistrationBillingCard() {
             alert("The card number is in the incorrect format.");
             return;
         }
+        if (!Number.isInteger((Number(cardExpiryM)))) {
+            alert("The month entered is invalid.")
+            return;
+        }
         if (!Number.isInteger((Number(cardExpiryY)))) {
             alert("The year is in the incorrect format.");
             return;
@@ -53,10 +57,10 @@ function RegistrationBillingCard() {
                     <label>Card Number</label>
                     <input type="text" value={cardNum}/>
                     
-                    <label>Expiry Month</label>
-                    <input type="password" value={cardExpiryM}/>
+                    <label>Expiry Month (MM)</label>
+                    <input type="text" value={cardExpiryM}/>
 
-                    <label>Expiry Year</label>
+                    <label>Expiry Year (YYYY)</label>
                     <input type="text" value={cardExpiryY}/>
 
                     <label>Name on Card</label>
