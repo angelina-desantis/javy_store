@@ -34,9 +34,10 @@ function CheckoutConfirm() {
     return (
         <main className="checkout">
             <div className="">
-                <AuthCustTopbar />
+                <CustTopbar />
                 {checkout === true ? (
-                    
+                    /* Todo: Display each game listing and total of order */
+
                 ) : (
                     <div className="text-center">
                         <h1> The order could not be completed. Please try again.

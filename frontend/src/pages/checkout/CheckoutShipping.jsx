@@ -41,7 +41,7 @@ function CheckoutShipping() {
     return (
         <main className="checkout">
             <div className="">
-                <AuthCustTopbar />
+                <CustTopbar />
                 <div className="form">
                     <label>Street Address</label>
                     <input type="text" value={address}/>

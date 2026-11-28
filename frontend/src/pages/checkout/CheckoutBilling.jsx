@@ -48,7 +48,7 @@ function CheckoutBilling() {
     return (
         <main className="checkout">
             <div className="">
-                <AuthCustTopbar />
+                <CustTopbar />
                     <div className="form">
                     <label>Card Number</label>
                     <input type="text" value={cardNum}/>
