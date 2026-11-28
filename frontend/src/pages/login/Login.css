@@ -1,0 +1,6 @@
+.text-center {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    text-align: center;
+}
