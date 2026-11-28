@@ -37,7 +37,10 @@ function RegistrationShippingInfo() {
         });
     }
 
-    /* If shipping information is validated, proceed to checkout */
+    /* TODO: If shipping information is validated:
+        - If origin is from login page, proceed to homepage
+        - If origin is from shopping cart, proceed to checkout 
+    */
     return (
         <main className="checkout">
             <div className="">
@@ -65,4 +68,4 @@ function RegistrationShippingInfo() {
     )
 }
 
-export default CheckoutShipping;
+export default RegistrationShippingInfo;
