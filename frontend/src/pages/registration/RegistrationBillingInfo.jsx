@@ -37,7 +37,7 @@ function RegistrationBillingInfo() {
         });
     }
 
-    /* If shipping information is validated, proceed to checkout */
+    /* TODO: If billing address information is validated, proceed to adding shipping information */
     return (
         <main className="checkout">
             <div className="">
@@ -65,4 +65,4 @@ function RegistrationBillingInfo() {
     )
 }
 
-export default CheckoutShipping;
+export default RegistrationBillinginfo;

@@ -28,6 +28,7 @@ function Registration() {
         }
     }
 
+    /* TODO: If all fields are validated, proceed to filling out billing card information */
     return (
         <main className="login">
             <CustTopbar />

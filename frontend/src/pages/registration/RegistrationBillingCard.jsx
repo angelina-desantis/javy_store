@@ -48,7 +48,7 @@ function RegistrationBillingCard() {
         });
     }
 
-     /* If billing card is validated, proceed to shipping information */
+     /* TODO: If billing card is validated, proceed to billing address information */
     return (
         <main className="checkout">
             <div className="">
@@ -76,4 +76,4 @@ function RegistrationBillingCard() {
     )
 }
 
-export default CheckoutBilling;
+export default RegistrationBillingCard;
